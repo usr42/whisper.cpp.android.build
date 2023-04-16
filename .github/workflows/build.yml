@@ -305,6 +305,8 @@ jobs:
       - name: Build
         run: |
           cd examples/whisper.android
+          mkdir -p app/src/main/assets/models
+          wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin -P app/src/main/assets/models
           ./gradlew assembleRelease --no-daemon
 
       - name: Upload binaries
@@ -313,9 +315,4 @@ jobs:
         with:
           name: whisper-android-example-${{ matrix.arch }}
           path: examples/whisper.android/app/build/outputs/apk
-          
-      - name: Upload release binaries
-        uses: actions/upload-artifact@v1
-        with:
-          name: whisper-android-example-release
-          path: examples/whisper.android/app/release
+
