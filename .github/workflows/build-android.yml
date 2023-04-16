@@ -7,7 +7,8 @@ on:
       model:
         description: 'Download Model'
         required: true
-        default: en
+        default: 'tiny.bin'
+        type: choice
         options:
           - base.bin
           - base.en.bin
@@ -18,21 +19,11 @@ on:
           - small.bin
           - small.en.bin
           - tiny.bin
-          - tiny.en.bin
-#           - 'base.bin'
-#           - 'base.en.bin'
-#           - 'large-v1.bin'
-#           - 'large.bin'
-#           - 'medium.bin'
-#           - 'medium.en.bin'
-#           - 'small.bin'
-#           - 'small.en.bin'
-#           - 'tiny.bin'
-#           - 'tiny.en.bin
-          
+          - tiny.en.bin         
       language:
         description: 'Language'
         default: en
+        type: choice
         options:
           - en
           - zh
