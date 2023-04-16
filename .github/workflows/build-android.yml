@@ -1,0 +1,87 @@
+name: Build Android
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: 'Download Model'
+        required: true
+        default: en
+        options:
+          - base.bin
+          - base.en.bin
+          - large-v1.bin
+          - large.bin
+          - medium.bin
+          - medium.en.bin
+          - small.bin
+          - small.en.bin
+          - tiny.bin
+          - tiny.en.bin
+#           - 'base.bin'
+#           - 'base.en.bin'
+#           - 'large-v1.bin'
+#           - 'large.bin'
+#           - 'medium.bin'
+#           - 'medium.en.bin'
+#           - 'small.bin'
+#           - 'small.en.bin'
+#           - 'tiny.bin'
+#           - 'tiny.en.bin
+          
+      language:
+        description: 'Language'
+        default: en
+        options:
+          - en
+          - zh
+          - de
+          - es
+          - ru
+          - ko
+          - fr
+          - ja
+          - pt
+env:
+  REPO_URL: https://github.com/tumuyan/trime-without-CMake
+  REPO_BRANCH: develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout last commit
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: "temurin"
+        java-version: 17
+        # will restore cache of dependencies and wrappers
+        cache: 'gradle'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+
+    - name: Build APP
+      env:
+        MODEL: ${{github.event.inputs.model}} 
+        LANG: ${{github.event.inputs.language}} 
+      run:  |
+        cd examples/whisper.android
+        mkdir -p app/src/main/assets/models
+        wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-$MODEL -P app/src/main/assets/models
+        sed -i "s/params.language.*/params.language = \"$LANG\";/" app/src/main/jni/whisper/jni.c
+        ./gradlew assembleRelease --no-daemon
+
+    - name: Upload Trime artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: whisper-android-app-example-${{github.event.inputs.language}}-${{github.event.inputs.model}}.zip
+        path: examples/whisper.android/app/build/outputs/apk
+        retention-days: 90
+
