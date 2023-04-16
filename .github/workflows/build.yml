@@ -313,8 +313,8 @@ jobs:
         with:
           name: whisper-android-example-${{ matrix.arch }}
           path: examples/whisper.android/app/build/outputs/apk
-      - name: Upload binaries
-#         if: matrix.blas == 'ON' && matrix.sdl2 == 'ON'
+          
+      - name: Upload release binaries
         uses: actions/upload-artifact@v1
         with:
           name: whisper-android-example-release
