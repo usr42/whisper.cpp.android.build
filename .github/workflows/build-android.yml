@@ -69,10 +69,10 @@ jobs:
         sed -i "s/params.language.*/params.language = \"$LANG\";/" app/src/main/jni/whisper/jni.c
         ./gradlew assembleRelease --no-daemon
 
-    - name: Upload Trime artifact
+    - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: whisper-android-app-example-${{github.event.inputs.language}}-${{github.event.inputs.model}}.zip
+        name: whisper-android-example-${{github.event.inputs.language}}-${{github.event.inputs.model}}.zip
         path: examples/whisper.android/app/build/outputs/apk
         retention-days: 90
 
