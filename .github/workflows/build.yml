@@ -229,7 +229,7 @@ jobs:
         run: |
           cd examples/whisper.android
           mkdir -p app/src/main/assets/models
-          wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin -P app/src/main/assets/models
+          wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin -P app/src/main/assets/models
           ./gradlew assembleRelease --no-daemon
 
       - name: Upload binaries
