@@ -65,6 +65,8 @@ jobs:
       run:  |
         cd examples/whisper.android
         mkdir -p app/src/main/assets/models
+        mkdir -p app/src/main/assets/samples
+        cp samples/jfk.wav app/src/main/assets/samples
         wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-$MODEL -P app/src/main/assets/models
         sed -i "s/params.language.*/params.language = \"$LANG\";/" app/src/main/jni/whisper/jni.c
         ./gradlew assembleRelease --no-daemon
